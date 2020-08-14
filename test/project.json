@@ -1,0 +1,12 @@
+{
+    "name": "TestApp",
+    "description": "A confused test app written in a confused script",
+    "version": "0.0.1",
+    "compiler": {
+        "libraryMode": false,
+        "destination": "node",
+        "entry": "Main.co"
+    },
+    "author": "Confuscript Contributors",
+    "license": "inherit github+floffah/confuscript"
+}

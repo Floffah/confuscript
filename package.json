@@ -1,0 +1,33 @@
+{
+  "name": "confuscript",
+  "version": "0.0.1",
+  "private": true,
+  "description": "A confused programming language for writing confused things. #",
+  "homepage": "https://github.com/Floffah/confuscript#readme",
+  "bugs": {
+    "url": "https://github.com/Floffah/confuscript/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Floffah/confuscript.git"
+  },
+  "license": "GPL-3.0",
+  "author": "Floffah",
+  "main": "out/cli/cli.js",
+  "scripts": {
+    "test": "yarn tsc && cd test && node ../src/cli/cli.js run && cd ../"
+  },
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "commander": "^6.0.0",
+    "enquirer": "^2.3.6"
+  },
+  "devDependencies": {
+    "@types/commander": "^2.12.2",
+    "@types/node": "^14.0.27",
+    "typescript": "^3.9.7"
+  },
+  "bin": {
+    "confuse": "dist/cli/"
+  }
+}
