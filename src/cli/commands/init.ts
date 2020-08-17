@@ -4,7 +4,7 @@ import {resolve} from "path";
 
 const {prompt} = require('enquirer');
 
-export default function init(opts: Object) {
+export default function init(opts: any) {
     let initials:any = {};
     if(existsSync(resolve(process.cwd(), "project.json"))) {
         initials = require(resolve(process.cwd(), "project.json"));

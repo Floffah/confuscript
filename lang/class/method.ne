@@ -1,0 +1,3 @@
+@lexer lex
+
+method -> "hi"
