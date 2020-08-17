@@ -16,7 +16,7 @@
   "main": "out/cli/cli.js",
   "scripts": {
     "test": "yarn tsc && cd test && node ../src/cli/cli.js run && cd ../",
-    "debug": "yarn nearley-rr lang/o/grammar.js lang/o/grammar.html"
+    "debug": "yarn nearley-rr lang/o/grammar.js docs/index.html"
   },
   "dependencies": {
     "better-nearley-railroad": "^1.3.0",

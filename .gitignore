@@ -1,3 +1,5 @@
+lang/o
+
 .yarn/*
 !.yarn/cache
 !.yarn/releases
