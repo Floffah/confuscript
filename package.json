@@ -15,7 +15,7 @@
   "author": "Floffah",
   "main": "out/cli/cli.js",
   "scripts": {
-    "test": "yarn tsc && cd test && node ../src/cli/cli.js run && cd ../",
+    "test": "cd test && node ../src/cli/cli.js run && cd ../",
     "debug": "yarn nearley-rr lang/o/grammar.js docs/index.html"
   },
   "dependencies": {
@@ -25,12 +25,12 @@
     "draftlog": "^1.0.12",
     "enquirer": "^2.3.6",
     "moo": "^0.5.1",
-    "nearley": "^2.19.5",
-    "opn": "^6.0.0"
+    "nearley": "^2.19.6"
   },
   "devDependencies": {
     "@types/chalk": "^2.2.0",
     "@types/commander": "^2.12.2",
+    "@types/nearley": "^2.11.1",
     "@types/node": "^14.0.27",
     "@types/opn": "^5.5.0",
     "typescript": "^3.9.7"

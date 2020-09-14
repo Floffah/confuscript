@@ -1,4 +1,4 @@
-@include "./method.ne"
+@lexer lex
 
 @{%
     const rootclasslex = {
@@ -6,8 +6,12 @@
     }
 %}
 
-@lexer lex
+@include "./method.ne"
 
-rootclass -> "class" %s %cw %s:? "{" %nl:? classbody:* %nl:? "}" {% (d) => { return { type: "rootclass", name: d[2].value, body: d[6] } } %}
+rootclass -> "class" %s %cw %s:? "{" %nl:? classbody:+ %nl:? "}" {% (d) => { return { type: "rootclass", name: d[2].value, body: d[6], public: false } } %}
+    | %pub %s "class" %s %cw %s:? "{" %nl:? classbody:+ %nl:? "}" {% (d) => { return { type: "rootclass", name: d[2].value, body: d[6], public: true } } %}
 
-classbody -> method {%id%}
+classbody -> methods
+    | %nl {%undef%}
+    | %w {%undef%}
+    | %s {%undef%}
