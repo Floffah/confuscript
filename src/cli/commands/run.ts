@@ -1,5 +1,5 @@
 import {resolve} from "path";
-import {existsSync, mkdirSync} from "fs";
+import {existsSync, mkdirSync, writeFileSync} from "fs";
 import searchdir from "../../lib/files/searchdir";
 import {ChildProcess, exec} from "child_process";
 import cmds from "../../lib/cmds";
@@ -28,14 +28,18 @@ function run(opts: any) {
 
 function crun(_opts:any) {
     let grammar = require(resolve(__dirname, '../../../lang/o/grammar.js')),
-        actioniser = new Actioniser(Grammar.fromCompiled(grammar));
+        actioniser = new Actioniser(Grammar.fromCompiled(grammar), {
+            projectroot: process.cwd()
+        });
 
     if (!existsSync(resolve(process.cwd(), "project.json"))) {
         throw new Error("project.json file not found");
     }
     let project = require(resolve(process.cwd(), "project.json"));
 
-    actioniser.start(resolve(process.cwd(), "src", project.compiler.entry));
+    actioniser.start("src/" + project.compiler.entry);
+    if(!existsSync(resolve(process.cwd(), "dist"))) mkdirSync(resolve(process.cwd(), "dist"));
+    writeFileSync(resolve(process.cwd(), "dist", "actionised.json"), JSON.stringify(actioniser.export(), null, 2));
 }
 
 function grammar(opts: any) {

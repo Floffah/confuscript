@@ -1,28 +1,33 @@
-@include "./class/rootclass.ne"
-@include "./util/value.ne"
-
 @{%
     const moo = require("moo");
 
     const lex = moo.compile({
         s: /[ \t]+/,
-        w: /[a-z]+/,
         cw: /[A-z]+/,
         cwn: /[A-z0-9]+/,
         nl: { match: /\n/, lineBreaks: true },
 
-        ...rootclasslex,
-        ...valueslex,
-
         //common
         stringdouble: /"/,
         stringsingle: /'/,
+
         openbody: /{$/,
         closebody: /}$/,
-        empty: /\(\)$/,
-        means: /\:$/,
+
+        means: ":",
         broitended: /\;$/,
-        pub: "public"
+
+        pub: "public",
+
+        opensub: "(",
+        closesub: ")",
+
+        //class
+        class: "class",
+
+        //values
+        ambiguous: "any",
+        string: "string"
     });
 
     function undef() {
@@ -32,16 +37,21 @@
     function idpipe(d) {
         return [d[0], ...d[1]];
     }
+
+    function idval(d) {
+        return d[0].value;
+    }
 %}
 
 @lexer lex
 
 @include "./linking/import.ne"
+@include "./class/rootclass.ne"
+@include "./util/value.ne"
 
 root -> main:+ {%id%}
 
-main -> %nl {%undef%}
-    | %w {%undef%}
-    | %s {%undef%}
+main -> rootclass {%id%}
     | import {%id%}
-    | rootclass {%id%}
+    | %nl {%idval%}
+    | %s {%idval%}
