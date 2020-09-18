@@ -15,7 +15,7 @@
   "author": "Floffah",
   "main": "out/cli/cli.js",
   "scripts": {
-    "test": "cd test && node ../src/cli/cli.js run && cd ../",
+    "test": "cd test && node ../ run && cd ../",
     "debug": "yarn nearley-rr lang/o/grammar.js docs/index.html"
   },
   "dependencies": {

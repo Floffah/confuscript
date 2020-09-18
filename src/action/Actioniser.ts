@@ -159,7 +159,7 @@ export default class Actioniser {
         console.log(chalk`{red !} ${message}`);
         console.log(chalk`{red !} {bold Fatal. Exiting...}`);
         console.log(chalk`{bold --- Actioniser Log End ---}`);
-        process.exit();
+        process.exit(1);
     }
 }
 
