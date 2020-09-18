@@ -7,7 +7,7 @@ export default class RootClass {
 
     name: string
     data: IRootClass = <IRootClass>{
-        methods: {}
+        methods: {},
     };
 
     constructor(actioniser: Actioniser) {
@@ -20,7 +20,7 @@ export default class RootClass {
 
         for(let method of info.body) {
             if(typeof method === "object" && method.type === "method") {
-                let methodd = new Method(this.actioniser);
+                let methodd = new Method(this.actioniser, this);
                 methodd.start(method);
                 if(!Array.isArray(this.data.methods[methodd.name])) {
                     this.data.methods[methodd.name] = [methodd.export()];

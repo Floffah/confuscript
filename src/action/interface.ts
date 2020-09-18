@@ -1,3 +1,5 @@
+import {IVarAccess} from "./Call";
+
 export interface IPlainRootClass {
     type: "rootclass",
     name: string,
@@ -5,12 +7,23 @@ export interface IPlainRootClass {
     public: boolean
 }
 
+export interface IPlainImport {
+    type: "rootimport",
+    location: string
+}
+
 export interface IPlainMethod {
     type: "method",
     public: boolean,
     returns: {type: "type", is:string},
-    body: any[],
+    body: (string|IPlainCall)[],
     name: string
+}
+
+export interface IPlainCall {
+    type: "call",
+    calls: string[],
+    values: IPlainValue[]
 }
 
 export interface IPlainValue {
@@ -20,14 +33,44 @@ export interface IPlainValue {
 
 export interface IRootClass {
     public: boolean,
-    methods: {[key:string]: IMethod[]}
+    methods: {[key:string]: IMethod[]},
 }
+
+export interface IBaseImport {
+    where: "file"|"global",
+}
+
+export interface IImportSymbol {
+    type: "method",
+    loc: string,
+    name: string,
+}
+
+export interface IGlobalImport extends IBaseImport {
+    where: "global",
+    location: string,
+    symbols: IImportSymbol[]
+}
+
+export interface IFileImport extends IBaseImport {
+    where: "file",
+    file: string
+}
+
+export type IImport = IGlobalImport | IFileImport;
 
 export interface IMethod {
     public: boolean,
-    returns: {type: string, is:string}
+    returns: {type: string, is:string},
+    body: (ICall)[]
+}
+
+export interface ICall {
+    calls: (IVarAccess)[]
 }
 
 export interface IFileRootData {
-    classes: {[key: string]:IRootClass}
+    classes: {[key: string]:IRootClass},
+    imports: string[],
+    imported: {[key: string]: IImportSymbol}
 }

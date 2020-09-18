@@ -27,7 +27,11 @@
 
         //values
         ambiguous: "any",
-        string: "string"
+        string: "string",
+
+        //random
+        dot: ".",
+        hash: "#",
     });
 
     function undef() {

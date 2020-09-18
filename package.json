@@ -25,7 +25,8 @@
     "draftlog": "^1.0.12",
     "enquirer": "^2.3.6",
     "moo": "^0.5.1",
-    "nearley": "^2.19.6"
+    "nearley": "^2.19.6",
+    "source-map-support": "^0.5.19"
   },
   "devDependencies": {
     "@types/chalk": "^2.2.0",
