@@ -1,17 +1,21 @@
 import Actioniser from "./Actioniser";
-import {IPlainRootClass, IRootClass} from "./interface";
+import {IFileRootData, IPlainRootClass, IRootClass} from "./interface";
 import Method from "./Method";
 
 export default class RootClass {
     actioniser: Actioniser;
+    path: string;
+    getdata: () => IFileRootData;
 
     name: string
     data: IRootClass = <IRootClass>{
         methods: {},
     };
 
-    constructor(actioniser: Actioniser) {
+    constructor(actioniser: Actioniser, path: string, getdata: () => IFileRootData) {
         this.actioniser = actioniser;
+        this.path = path;
+        this.getdata = getdata;
     }
 
     start(info: IPlainRootClass) {

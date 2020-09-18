@@ -27,7 +27,7 @@ export default class Actioniser {
             this.parser.feed(read.join("\n"));
             let parsed: (IPlainRootClass | string)[] = this.parser.finish()[0];
             this.writeParsed(path, parsed);
-            this.filedata.set(path, this.fileroot(parsed));
+            this.filedata.set(path, this.fileroot(parsed, path));
         }
     }
 
@@ -41,7 +41,7 @@ export default class Actioniser {
         writeFileSync(resolve(this.options.projectroot, "dist/parsed", path + ".json"), JSON.stringify(parsed, null, 2));
     }
 
-    fileroot(parsed: (IPlainRootClass | IPlainImport | string)[]) {
+    fileroot(parsed: (IPlainRootClass | IPlainImport | string)[], file: string) {
         let data: IFileRootData = {
             classes: {},
             imports: [],
@@ -50,7 +50,7 @@ export default class Actioniser {
 
         for (let root of parsed) {
             if (typeof root === "object" && root.type === "rootclass") {
-                let rootclass = new RootClass(this);
+                let rootclass = new RootClass(this, file, () => {return data;});
                 rootclass.start(root);
                 data.classes[rootclass.name] = rootclass.export();
             } else if (typeof root === "object" && root.type === "rootimport") {
