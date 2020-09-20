@@ -2,6 +2,6 @@ import "confused.Logger"
 
 public class Main {
     public main():any {
-        Log("Hello world from TestApp");
+        //Log("Hello world from TestApp");
     }
 }

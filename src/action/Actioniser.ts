@@ -9,7 +9,7 @@ import globals from "../outglobal";
 const chalk = require('chalk');
 
 export default class Actioniser {
-    parser: Parser;
+    grammar: Grammar;
     options: IActioniserOptions;
 
     filedata: Map<string, IFileRootData> = new Map<string, IFileRootData>();
@@ -17,23 +17,25 @@ export default class Actioniser {
     constructor(grammar: Grammar, opts: IActioniserOptions) {
         console.log(chalk`{bold ----- Actioniser Log -----}`);
 
-        this.parser = new Parser(grammar);
+        this.grammar = grammar;
         this.options = opts;
     }
 
     start(path: string, isGlobal?: boolean) {
-        this.info(`Reading ${path}`);
+        this.info(`Parsing ${path}`);
         if (!this.filedata.has(path)) {
             let read;
+            let parser = new Parser(this.grammar);
             if (!isGlobal && !path.startsWith("globals")) {
-                read = readFileSync(process.cwd() + sep + path, "utf8").split(/((\r\n)|(\n\r))/g);
+                read = readFileSync(process.cwd() + sep + path, "utf8");
             } else /*if (isGlobal && path.startsWith("globals"))*/ {
-                read = readFileSync(resolve(__dirname, "../../src", path), "utf8").split(/((\r\n)|(\n\r))/g);
+                read = readFileSync(resolve(__dirname, "../../src", path), "utf8");
             }
-            this.parser.feed(read.join("\n"));
-            let parsed: (IPlainRootClass | string)[] = this.parser.finish()[0];
+            parser.feed(read);
+            let parsed: (IPlainRootClass | string)[] = parser.finish()[0];
             this.writeParsed(path, parsed);
             this.filedata.set(path, this.fileroot(parsed, path));
+            return;
         }
     }
 
@@ -71,6 +73,8 @@ export default class Actioniser {
                         for (let imp of idata.symbols) {
                             data.imported[imp.name] = imp;
                         }
+                    } else if(idata !== null && "where" in idata && idata.where === "global") {
+
                     } else {
                         this.fatal(`Could not find import ${root.location}.`);
                     }
@@ -127,7 +131,7 @@ export default class Actioniser {
         } else if (existsSync(resolve(__dirname, "../../src", "globals", importloc.replace(".", sep) + ".co"))) {
             this.start("globals" + sep + importloc.replace(".", sep) + ".co", true);
             return {
-                where: "file",
+                where: "global",
                 file: resolve(__dirname, "../", "globals", importloc.replace(".", sep) + ".co")
             }
         } else return null;/*if (this.indexExists(importloc, globals) && typeof this.index(importloc, globals) === "object") {

@@ -48,7 +48,7 @@ export interface IImportSymbol {
 
 export interface IGlobalImport extends IBaseImport {
     where: "global",
-    location: string
+    file: string
 }
 
 export interface IFileImport extends IBaseImport {

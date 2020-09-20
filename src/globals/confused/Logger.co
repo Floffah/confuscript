@@ -1,5 +1,3 @@
-import "confused.util.Global"
-
 public class Logger {
     constructor() {
         super("Logger", "class");

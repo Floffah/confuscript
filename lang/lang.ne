@@ -2,10 +2,11 @@
     const moo = require("moo");
 
     const lex = moo.compile({
-        s: /[ \t]+/,
+        s: /[\ \t]+/,
         cw: /[A-z]+/,
         cwn: /[A-z0-9]+/,
         nl: { match: /\n/, lineBreaks: true },
+        rnl: { match: /\r\n/, lineBreaks: true },
 
         //common
         stringdouble: /"/,
@@ -28,10 +29,19 @@
         //values
         ambiguous: "any",
         string: "string",
+        nothing: "void",
+        comment: "//",
 
         //random
         dot: ".",
         hash: "#",
+        theresMore: ",",
+        maybeLiteral: /\#/,
+        anysymbol: /[\-\_\=\+\[\{\]\}\:\@\~\<\>\/\?\`\!\£\$\%\^\&\*\9\\\|]+/,
+
+        run: "run",
+        node: "node",
+        java: "java",
     });
 
     function undef() {
@@ -59,3 +69,5 @@ main -> rootclass {%id%}
     | import {%id%}
     | %nl {%idval%}
     | %s {%idval%}
+    | %rnl {%idval%}
+    | comment {%idval%}
