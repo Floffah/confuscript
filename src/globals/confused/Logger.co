@@ -1,0 +1,19 @@
+import "confused.util.Global"
+
+public class Logger extends Global {
+    public constructor() {
+        super("Logger", "class");
+    }
+
+    public info(message: string):void ##{
+        run {
+            console.log(#{message}#);
+        }
+        node {
+            console.log(#{message}#);
+        }
+        java {
+            System.out.printLn(#{message}#);
+        }
+    }##
+}

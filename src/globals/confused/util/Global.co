@@ -1,0 +1,9 @@
+public class Global {
+    public globalName: string;
+    public globalType: string;
+
+    public constructor(name: string, type?: string) {
+        this.globalName = name;
+        this.globalType = type;
+    }
+}
