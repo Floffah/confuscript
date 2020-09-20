@@ -9,7 +9,7 @@ import globals from "../outglobal";
 const chalk = require('chalk');
 
 export default class Actioniser {
-    parser: Parser;
+    grammar: Grammar;
     options: IActioniserOptions;
 
     filedata: Map<string, IFileRootData> = new Map<string, IFileRootData>();
@@ -17,20 +17,21 @@ export default class Actioniser {
     constructor(grammar: Grammar, opts: IActioniserOptions) {
         console.log(chalk`{bold ----- Actioniser Log -----}`);
 
-        this.parser = new Parser(grammar, {keepHistory: true});
+        this.grammar = grammar;
         this.options = opts;
     }
 
     start(path: string, isGlobal?: boolean) {
         if (!this.filedata.has(path)) {
             let read;
+            let parser = new Parser(this.grammar, {keepHistory: true});
             if (!isGlobal && !path.startsWith("globals")) {
                 read = readFileSync(process.cwd() + sep + path, "utf8").split(/((\r\n)|(\n\r))/g);
             } else /*if (isGlobal && path.startsWith("globals"))*/ {
                 read = readFileSync(resolve(__dirname, "../../src", path), "utf8").split(/((\r\n)|(\n\r))/g);
             }
-            this.parser.feed(read.join("\n"));
-            let parsed: (IPlainRootClass | string)[] = this.parser.finish()[0];
+            parser.feed(read.join("\n"));
+            let parsed: (IPlainRootClass | string)[] = parser.finish()[0];
             this.writeParsed(path, parsed);
             this.filedata.set(path, this.fileroot(parsed, path));
         }
