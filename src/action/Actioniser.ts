@@ -3,7 +3,7 @@ import {Grammar, Parser} from "nearley";
 import {existsSync, mkdirSync, readFileSync, writeFileSync} from "fs";
 import {resolve, sep} from "path";
 import RootClass from "./RootClass";
-import {IFileRootData, IImport, IImportSymbol, IPlainImport, IPlainRootClass} from "./interface";
+import {IFileRootData, IImport, IPlainImport, IPlainRootClass} from "./interface";
 import globals from "../outglobal";
 
 const chalk = require('chalk');
@@ -17,13 +17,18 @@ export default class Actioniser {
     constructor(grammar: Grammar, opts: IActioniserOptions) {
         console.log(chalk`{bold ----- Actioniser Log -----}`);
 
-        this.parser = new Parser(grammar);
+        this.parser = new Parser(grammar, {keepHistory: true});
         this.options = opts;
     }
 
-    start(path: string) {
+    start(path: string, isGlobal?: boolean) {
         if (!this.filedata.has(path)) {
-            let read = readFileSync(path, "utf8").split(/\r\n/g);
+            let read;
+            if (!isGlobal && !path.startsWith("globals")) {
+                read = readFileSync(process.cwd() + sep + path, "utf8").split(/((\r\n)|(\n\r))/g);
+            } else /*if (isGlobal && path.startsWith("globals"))*/ {
+                read = readFileSync(resolve(__dirname, "../../src", path), "utf8").split(/((\r\n)|(\n\r))/g);
+            }
             this.parser.feed(read.join("\n"));
             let parsed: (IPlainRootClass | string)[] = this.parser.finish()[0];
             this.writeParsed(path, parsed);
@@ -50,7 +55,9 @@ export default class Actioniser {
 
         for (let root of parsed) {
             if (typeof root === "object" && root.type === "rootclass") {
-                let rootclass = new RootClass(this, file, () => {return data;});
+                let rootclass = new RootClass(this, file, () => {
+                    return data;
+                });
                 rootclass.start(root);
                 data.classes[rootclass.name] = rootclass.export();
             } else if (typeof root === "object" && root.type === "rootimport") {
@@ -59,7 +66,7 @@ export default class Actioniser {
                 } else {
                     let idata: IImport = <IImport>this.importinfo(root.location);
                     data.imports.push(root.location);
-                    if (idata !== null && "where" in idata && idata.where === "global") {
+                    if (idata !== null && "where" in idata && idata.where === "legacyglobal") {
                         for (let imp of idata.symbols) {
                             data.imported[imp.name] = imp;
                         }
@@ -76,19 +83,19 @@ export default class Actioniser {
     find(importloc: string) {
         if (this.indexExists(importloc, globals)) {
             return true;
-        } else if (existsSync(resolve(this.options.projectroot + "src", importloc.replace(".", sep) + ".co"))) {
+        } else if (existsSync(resolve(__dirname, "../../src", "globals", importloc.replace(".", sep) + ".co"))) {
             return true;
         } else {
             return false;
         }
     }
 
-    indexExists(location: string, obj: {[key: string]: any}) {
+    indexExists(location: string, obj: { [key: string]: any }) {
         let toreturn = obj,
             words = location.split(".");
 
-        for(let word of words) {
-            if(word in toreturn) {
+        for (let word of words) {
+            if (word in toreturn) {
                 toreturn = toreturn[word];
             } else {
                 return false;
@@ -110,29 +117,35 @@ export default class Actioniser {
     }
 
     importinfo(importloc: string): IImport | null {
-        if (this.indexExists(importloc, globals) && typeof this.index(importloc, globals) === "object") {
-            let symbols: IImportSymbol[] = [];
-            for (let s of Object.keys(this.index(importloc, globals))) {
-                let symbol = this.index(importloc + "." + s, globals);
-                if (typeof symbol === "function") {
-                    let sym = symbol("import");
-                    if (sym.type === "method") {
-                        symbols.push({type: "method", loc: importloc, name: s});
-                    }
-                }
-            }
-            return {
-                where: "global",
-                location: importloc,
-                symbols: symbols
-            };
-        } else if (existsSync(resolve(this.options.projectroot + "src", importloc.replace(".", sep) + ".co"))) {
+        if (existsSync(resolve(this.options.projectroot + "src", importloc.replace(".", sep) + ".co"))) {
             this.start("src" + sep + importloc.replace(".", sep) + ".co");
             return {
                 where: "file",
                 file: "src" + sep + importloc.replace(".", sep) + ".co"
             }
-        } else return null;
+        } else if (existsSync(resolve(__dirname, "../../src", "globals", importloc.replace(".", sep) + ".co"))) {
+            this.start("globals" + sep + importloc.replace(".", sep) + ".co", true);
+            return {
+                where: "file",
+                file: resolve(__dirname, "../", "globals", importloc.replace(".", sep) + ".co")
+            }
+        } else return null;/*if (this.indexExists(importloc, globals) && typeof this.index(importloc, globals) === "object") {
+             let symbols: IImportSymbol[] = [];
+             for (let s of Object.keys(this.index(importloc, globals))) {
+                 let symbol = this.index(importloc + "." + s, globals);
+                 if (typeof symbol === "function") {
+                     let sym = symbol("import");
+                     if (sym.type === "method") {
+                         symbols.push({type: "method", loc: importloc, name: s});
+                     }
+                 }
+             }
+             return {
+                 where: "legacyglobal",
+                 location: importloc,
+                 symbols: symbols
+             };
+         } else*/
     }
 
     export() {

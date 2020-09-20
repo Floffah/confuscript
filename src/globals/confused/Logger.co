@@ -1,7 +1,7 @@
 import "confused.util.Global"
 
-public class Logger extends Global {
-    public constructor() {
+public class Logger {
+    constructor() {
         super("Logger", "class");
     }
 

@@ -1,4 +1,4 @@
-import "confused.logging"
+import "confused.Logger"
 
 public class Main {
     public main():any {

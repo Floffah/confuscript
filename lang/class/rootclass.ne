@@ -6,5 +6,6 @@ rootclass -> "class" %s %cw %s:? "{" %nl:? classbody:+ %nl:? "}" {% (d) => { ret
     | "public" %s "class" %s %cw %s:? "{" %nl:? classbody:+ %nl:? "}" {% (d) => { return { type: "rootclass", name: d[4].value, body: d[8], public: true } } %}
 
 classbody -> methods {%id%}
+    | constructor {%id%}
     | %nl {%idval%}
     | %s {%idval%}

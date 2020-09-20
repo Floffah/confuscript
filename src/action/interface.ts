@@ -37,7 +37,7 @@ export interface IRootClass {
 }
 
 export interface IBaseImport {
-    where: "file"|"global",
+    where: "file"|"global"|"legacyglobal",
 }
 
 export interface IImportSymbol {
@@ -48,8 +48,7 @@ export interface IImportSymbol {
 
 export interface IGlobalImport extends IBaseImport {
     where: "global",
-    location: string,
-    symbols: IImportSymbol[]
+    location: string
 }
 
 export interface IFileImport extends IBaseImport {
@@ -57,7 +56,13 @@ export interface IFileImport extends IBaseImport {
     file: string
 }
 
-export type IImport = IGlobalImport | IFileImport;
+export interface ILegacyGlobal extends IBaseImport {
+    where: "legacyglobal",
+    location: string,
+    symbols: IImportSymbol[]
+}
+
+export type IImport = IGlobalImport | ILegacyGlobal | IFileImport;
 
 export interface IMethod {
     public: boolean,

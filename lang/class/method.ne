@@ -12,3 +12,5 @@ methodbody -> call {%id%}
 call -> %cw "(" values ")" ";":? {% (d) => { return { type: "call", calls: [d[0].value], values: d[2] } } %}
 
 methodargs -> "(" ")"
+
+constructor -> %cw methodargs "{" methodbody:+ "}" {% (d) => { return { type: "constructor", name: d[0].value, body: d[3] } } %}
