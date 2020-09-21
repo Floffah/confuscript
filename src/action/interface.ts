@@ -1,5 +1,14 @@
 import {IVarAccess} from "./Call";
 
+//file
+export interface IFileRootData {
+    classes: {[key: string]:IRootClass},
+    imports: string[],
+    link: {[key: string]: string}
+}
+
+
+//rootclass
 export interface IPlainRootClass {
     type: "rootclass",
     name: string,
@@ -7,54 +16,26 @@ export interface IPlainRootClass {
     public: boolean
 }
 
-export interface IPlainImport {
-    type: "rootimport",
-    location: string
-}
-
-export interface IPlainMethod {
-    type: "method",
-    public: boolean,
-    returns: {type: "type", is:string},
-    body: (string|IPlainCall)[],
-    name: string
-}
-
-export interface IPlainInject {
-    type: "inject",
-    name: string,
-    public: boolean,
-    returns: {
-        type: "type",
-        is: string
-    }
-    body: (string|IInjected)[]
-}
-
-export interface IPlainCall {
-    type: "call",
-    calls: string[],
-    values: IPlainValue[]
-}
-
-export interface IPlainValue {
-    type: "string",
-    value: any
-}
-
 export interface IRootClass {
     public: boolean,
     methods: {[key:string]: (IMethod|IInject)[]},
 }
 
-export interface IBaseImport {
-    where: "file"|"global"|"legacyglobal",
+
+//import
+export interface IPlainImport {
+    type: "rootimport",
+    location: string
 }
 
 export interface IImportSymbol {
     type: "method",
     loc: string,
     name: string,
+}
+
+export interface IBaseImport {
+    where: "file"|"global"|"legacyglobal",
 }
 
 export interface IGlobalImport extends IBaseImport {
@@ -67,18 +48,47 @@ export interface IFileImport extends IBaseImport {
     file: string
 }
 
-export interface ILegacyGlobal extends IBaseImport {
-    where: "legacyglobal",
-    location: string,
-    symbols: IImportSymbol[]
-}
+export type IImport = IGlobalImport | IFileImport;
 
-export type IImport = IGlobalImport | ILegacyGlobal | IFileImport;
+
+//method
+export interface IPlainMethod {
+    type: "method",
+    public: boolean,
+    returns: {type: "type", is:string},
+    body: (string|IPlainCall)[],
+    name: string
+}
 
 export interface IMethod {
     public: boolean,
     returns: {type: string, is:string},
     body: (ICall)[]
+}
+
+
+//call
+export interface IPlainCall {
+    type: "call",
+    calls: string[],
+    values: IPlainValue[]
+}
+
+export interface ICall {
+    calls: (IVarAccess)[]
+}
+
+
+//inject
+export interface IPlainInject {
+    type: "inject",
+    name: string,
+    public: boolean,
+    returns: {
+        type: "type",
+        is: string
+    }
+    body: (string|IInjected)[]
 }
 
 export interface IInject {
@@ -94,12 +104,9 @@ export interface IInjected {
     value: (string|{type: "injectvar", var: string})[]
 }
 
-export interface ICall {
-    calls: (IVarAccess)[]
-}
 
-export interface IFileRootData {
-    classes: {[key: string]:IRootClass},
-    imports: string[],
-    imported: {[key: string]: IImportSymbol}
+//value
+export interface IPlainValue {
+    type: "string",
+    value: any
 }

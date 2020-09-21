@@ -11,7 +11,9 @@ methodbody -> call {%id%}
     | %s {%idval%}
     | comment {%idval%}
 
-call -> %cw "(" values (%s:? "," %s:? values):* ")" ";":? {% (d) => { return { type: "call", calls: [d[0].value], values: [...d[2], ...d[3]]} } %}
+call -> %cw callextra:* "(" values (%s:? "," %s:? values):* ")" ";":? {% (d) => { return { type: "call", calls: [d[0].value, ...d[1]], values: [...d[3], ...d[4]]} } %}
+
+callextra -> "." %cw {% (d) => { return d[1].value } %}
 
 methodargs -> "(" methodargbits:? ")" {% (d) => { return d[1] } %}
 

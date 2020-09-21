@@ -1,5 +1,5 @@
 public class Logger {
-    public info(message: string):void ##{
+    public Info(message: string):void ##{
         run {
             console.log(#{message}#);
         }

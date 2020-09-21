@@ -32,11 +32,14 @@ export default class Class {
 
     getAccess(name: string, type: "call"): boolean | IVarAccess {
         if (type === "call") {
-            let imported: IImportSymbol = this.method.rclass.getdata().imported[name];
+            let imported = this.method.rclass.getdata().link[name];
             if (!imported) {
                 return false;
             }
-            if (imported.type !== "method") {
+            let imp = this.actioniser.filedata.get(imported);
+            if(imp) {
+                return !!imp.classes[name];
+            } else {
                 return false;
             }
         }

@@ -53,7 +53,7 @@ export default class Actioniser {
         let data: IFileRootData = {
             classes: {},
             imports: [],
-            imported: {}
+            link: {}
         };
 
         for (let root of parsed) {
@@ -69,12 +69,13 @@ export default class Actioniser {
                 } else {
                     let idata: IImport = <IImport>this.importinfo(root.location);
                     data.imports.push(root.location);
-                    if (idata !== null && "where" in idata && idata.where === "legacyglobal") {
-                        for (let imp of idata.symbols) {
-                            data.imported[imp.name] = imp;
+                    if(idata !== null && "where" in idata && idata.where === "global") {
+                        let imp = this.filedata.get(idata.file);
+                        if(imp) {
+                            for(let cls of Object.keys(imp.classes)) {
+                                data.link[cls] = idata.file;
+                            }
                         }
-                    } else if(idata !== null && "where" in idata && idata.where === "global") {
-
                     } else {
                         this.fatal(`Could not find import ${root.location}.`);
                     }
