@@ -44,7 +44,7 @@ export interface IPlainValue {
 
 export interface IRootClass {
     public: boolean,
-    methods: {[key:string]: IMethod[]},
+    methods: {[key:string]: (IMethod|IInject)[]},
 }
 
 export interface IBaseImport {

@@ -1,4 +1,4 @@
-import {IInject, IMethod, IPlainInject} from "./interface";
+import {IInject, IPlainInject} from "./interface";
 import Actioniser from "./Actioniser";
 import RootClass from "./RootClass";
 
@@ -24,8 +24,8 @@ export default class InjectMethod {
         this.data.java = [""];
         for (let thing of info.body) {
             if (typeof thing === "object" && thing.type === "runinject") {
-                for(let part of thing.value) {
-                    if(typeof part === "string") {
+                for (let part of thing.value) {
+                    if (typeof part === "string") {
                         this.data.run[this.data.run.length - 1] += part;
                     } else {
                         this.data.run.push({var: part.var});
@@ -33,8 +33,8 @@ export default class InjectMethod {
                     }
                 }
             } else if (typeof thing === "object" && thing.type === "nodeinject") {
-                for(let part of thing.value) {
-                    if(typeof part === "string") {
+                for (let part of thing.value) {
+                    if (typeof part === "string") {
                         this.data.node[this.data.node.length - 1] += part;
                     } else {
                         this.data.node.push({var: part.var});
@@ -42,8 +42,8 @@ export default class InjectMethod {
                     }
                 }
             } else if (typeof thing === "object" && thing.type === "runinject") {
-                for(let part of thing.value) {
-                    if(typeof part === "string") {
+                for (let part of thing.value) {
+                    if (typeof part === "string") {
                         this.data.java[this.data.java.length - 1] += part;
                     } else {
                         this.data.java.push({var: part.var});
