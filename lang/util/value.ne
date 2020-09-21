@@ -25,7 +25,6 @@ literallyAnything -> %cwn {% (d) => {return d[0].value} %}
     | %dot {%idval%}
     | %opensub {%idval%}
     | %closesub {%idval%}
-    | %hash {%idval%}
     | %theresMore {%idval%}
     | stringmark {%idval%}
 
@@ -37,7 +36,6 @@ literallyAnythingButLine -> %cwn {% (d) => {return d[0].value} %}
    | %dot {%idval%}
    | %opensub {%idval%}
    | %closesub {%idval%}
-   | %hash {%idval%}
    | %theresMore {%idval%}
    | stringmark {%idval%}
 

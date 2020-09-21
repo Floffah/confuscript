@@ -3,7 +3,7 @@ import {IVarAccess} from "./Call";
 export interface IPlainRootClass {
     type: "rootclass",
     name: string,
-    body: (string|IPlainMethod)[],
+    body: (string|IPlainMethod|IPlainInject)[],
     public: boolean
 }
 
@@ -18,6 +18,17 @@ export interface IPlainMethod {
     returns: {type: "type", is:string},
     body: (string|IPlainCall)[],
     name: string
+}
+
+export interface IPlainInject {
+    type: "inject",
+    name: string,
+    public: boolean,
+    returns: {
+        type: "type",
+        is: string
+    }
+    body: (string|IInjected)[]
 }
 
 export interface IPlainCall {
@@ -68,6 +79,19 @@ export interface IMethod {
     public: boolean,
     returns: {type: string, is:string},
     body: (ICall)[]
+}
+
+export interface IInject {
+    public: boolean,
+    returns: {type: "type", is:string},
+    run: (string|{var: string})[],
+    node: (string|{var: string})[],
+    java: (string|{var: string})[]
+}
+
+export interface IInjected {
+    type: "runinject"|"nodeinject"|"javainject",
+    value: (string|{type: "injectvar", var: string})[]
 }
 
 export interface ICall {

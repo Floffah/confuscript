@@ -21,4 +21,4 @@ extraargs -> %s:? "," %s:? methodarg {% (d) => { return d[3] } %}
 
 methodarg -> anyWordReally ":" %s:? types {% (d) => { return { type: "methodarg", name: d[0], type: d[3] } } %}
 
-methodconstructor -> %cw methodargs %s:? "{" methodbody:+ "}" {% (d) => { return { type: "constructor", name: d[0].value, body: d[3] } } %}
+methodconstructor -> %cw methodargs %s:? "{" methodbody:+ "}" {% (d) => { return { type: "constructor", name: d[0].value, body: d[4] } } %}

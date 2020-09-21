@@ -1,8 +1,4 @@
 public class Logger {
-    constructor() {
-        super("Logger", "class");
-    }
-
     public info(message: string):void ##{
         run {
             console.log(#{message}#);

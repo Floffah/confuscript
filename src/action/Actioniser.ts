@@ -132,7 +132,7 @@ export default class Actioniser {
             this.start("globals" + sep + importloc.replace(".", sep) + ".co", true);
             return {
                 where: "global",
-                file: resolve(__dirname, "../", "globals", importloc.replace(".", sep) + ".co")
+                file: "globals" + sep + importloc.replace(".", sep) + ".co"
             }
         } else return null;/*if (this.indexExists(importloc, globals) && typeof this.index(importloc, globals) === "object") {
              let symbols: IImportSymbol[] = [];

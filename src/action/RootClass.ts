@@ -1,6 +1,7 @@
 import Actioniser from "./Actioniser";
-import {IFileRootData, IPlainRootClass, IRootClass} from "./interface";
+import {IFileRootData, IPlainInject, IPlainRootClass, IRootClass} from "./interface";
 import Method from "./Method";
+import InjectMethod from "./InjectMethod";
 
 export default class RootClass {
     actioniser: Actioniser;
@@ -30,6 +31,14 @@ export default class RootClass {
                     this.data.methods[methodd.name] = [methodd.export()];
                 } else {
                     this.data.methods[methodd.name].push(methodd.export());
+                }
+            } else if(typeof method === "object" && method.type === "inject") {
+                let inject = new InjectMethod(this.actioniser, this);
+                inject.start(method);
+                if(!Array.isArray(this.data.methods[inject.name])) {
+                    this.data.methods[inject.name] = [inject.export()];
+                } else {
+                    this.data.methods[inject.name].push(inject.export());
                 }
             }
         }
