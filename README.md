@@ -1,3 +1,5 @@
+Please upvote this issue: [https://github.com/github/linguist/issues/5017](#5017 Add suppot for Confuscript)
+
 # confuscript
 A confused programming language for writing confused things.
 
