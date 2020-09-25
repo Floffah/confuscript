@@ -1,4 +1,4 @@
-import {ICall, IImportSymbol, IPlainCall} from "./interface";
+import {ICall, IPlainCall} from "./interface";
 import Actioniser from "./Actioniser";
 import Method from "./Method";
 
