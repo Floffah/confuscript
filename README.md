@@ -8,3 +8,7 @@ You can see the grammar rules [here](https://floffah.github.io/confuscript/) bef
 "Hey man why is this called confuscript?"
 
 ok ill explain
+
+the reasoning behind the name is as follows:
+ - It is confused as to what it compiles to. It can be live interpreted (but wont recognise file changes), it can be compiled to nodejs, java, or native executables via Go
+ - The syntax is a combination of the java structure, with typescript's types, and csharp's naming
