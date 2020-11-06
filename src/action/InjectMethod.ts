@@ -41,7 +41,7 @@ export default class InjectMethod {
                         this.data.node.push("");
                     }
                 }
-            } else if (typeof thing === "object" && thing.type === "runinject") {
+            } else if (typeof thing === "object" && thing.type === "javainject") {
                 for (let part of thing.value) {
                     if (typeof part === "string") {
                         this.data.java[this.data.java.length - 1] += part;

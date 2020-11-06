@@ -5,6 +5,8 @@ import {ChildProcess, exec} from "child_process";
 import cmds from "../../lib/cmds";
 import Actioniser from "../../action/Actioniser";
 import {Grammar} from "nearley";
+import Runner from "../../runner/Runner";
+import {IFileRootData} from "../../action/interface";
 
 const chalk = require('chalk');
 
@@ -39,7 +41,11 @@ function crun(_opts:any) {
 
     actioniser.start("src/" + project.compiler.entry);
     if(!existsSync(resolve(process.cwd(), "dist"))) mkdirSync(resolve(process.cwd(), "dist"));
-    writeFileSync(resolve(process.cwd(), "dist", "actionised.json"), JSON.stringify(actioniser.export(), null, 2));
+    let output: {[p: string]: IFileRootData} = actioniser.export();
+    writeFileSync(resolve(process.cwd(), "dist", "actionised.json"), JSON.stringify(output, null, 2));
+
+    let runner = new Runner(output);
+    runner.start("src/" + project.compiler.entry)
 }
 
 function grammar(opts: any) {
