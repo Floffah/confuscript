@@ -10,6 +10,7 @@ export default class RootClass {
 
     name: string
     data: IRootClass = <IRootClass>{
+        type: "rootclass",
         methods: {},
     };
 

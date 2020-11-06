@@ -1,10 +1,8 @@
-import {IVarAccess} from "./Call";
-
 //file
 export interface IFileRootData {
-    classes: {[key: string]:IRootClass},
+    classes: { [key: string]: IRootClass },
     imports: string[],
-    link: {[key: string]: string}
+    link: { [key: string]: string }
 }
 
 
@@ -12,13 +10,14 @@ export interface IFileRootData {
 export interface IPlainRootClass {
     type: "rootclass",
     name: string,
-    body: (string|IPlainMethod|IPlainInject)[],
+    body: (string | IPlainMethod | IPlainInject)[],
     public: boolean
 }
 
 export interface IRootClass {
+    type: "rootclass",
     public: boolean,
-    methods: {[key:string]: (IMethod|IInject)[]},
+    methods: { [key: string]: (IMethod | IInject)[] },
 }
 
 
@@ -35,7 +34,7 @@ export interface IImportSymbol {
 }
 
 export interface IBaseImport {
-    where: "file"|"global"|"legacyglobal",
+    where: "file" | "global" | "legacyglobal",
 }
 
 export interface IGlobalImport extends IBaseImport {
@@ -55,14 +54,14 @@ export type IImport = IGlobalImport | IFileImport;
 export interface IPlainMethod {
     type: "method",
     public: boolean,
-    returns: {type: "type", is:string},
-    body: (string|IPlainCall)[],
+    returns: { type: "type", is: string },
+    body: (string | IPlainCall)[],
     name: string
 }
 
 export interface IMethod {
     public: boolean,
-    returns: {type: string, is:string},
+    returns: { type: string, is: string },
     body: (ICall)[]
 }
 
@@ -75,9 +74,28 @@ export interface IPlainCall {
 }
 
 export interface ICall {
-    calls: (IVarAccess)[]
+    calls: (ICallLocation)[]
 }
 
+export type ICallLocation = INPCallLocation|IPropCallLocation;
+
+export interface INPCallLocation {
+    type: "noparent",
+    link: string,
+    object: {
+        name: string,
+        type: "rootclass"
+    }
+}
+
+export interface IPropCallLocation {
+    type: "property",
+    link: string,
+    object: {
+        name: string,
+        type: "method"|"property"
+    }
+}
 
 //inject
 export interface IPlainInject {
@@ -88,20 +106,20 @@ export interface IPlainInject {
         type: "type",
         is: string
     }
-    body: (string|IInjected)[]
+    body: (string | IInjected)[]
 }
 
 export interface IInject {
     public: boolean,
-    returns: {type: "type", is:string},
-    run: (string|{var: string})[],
-    node: (string|{var: string})[],
-    java: (string|{var: string})[]
+    returns: { type: "type", is: string },
+    run: (string | { var: string })[],
+    node: (string | { var: string })[],
+    java: (string | { var: string })[]
 }
 
 export interface IInjected {
-    type: "runinject"|"nodeinject"|"javainject",
-    value: (string|{type: "injectvar", var: string})[]
+    type: "runinject" | "nodeinject" | "javainject",
+    value: (string | { type: "injectvar", var: string })[]
 }
 
 
