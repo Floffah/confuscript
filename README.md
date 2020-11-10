@@ -1,4 +1,5 @@
-Please upvote this issue: [#5017 Add support for Confuscript](https://github.com/github/linguist/issues/5017)
+# Q: Why is this archived?
+This repository has been archived to make way for the new confuscript structure which you will see soon!
 
 # confuscript
 A confused programming language for writing confused things.
