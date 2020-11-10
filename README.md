@@ -1,5 +1,5 @@
 # Q: Why is this archived?
-This repository has been archived to make way for the new confuscript structure which you will see soon!
+This repository has been archived to make way for the new confuscript structure which you will see soon! See progress [here](https://github.com/confuscript/confuscript). A lot of code from here has and will be migrated over to there.
 
 # confuscript
 A confused programming language for writing confused things.
